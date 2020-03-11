@@ -1,0 +1,413 @@
+current version: 2020-02-18 10:30
+# --------------------------------------
+# file:      murc_robot
+# author:    Guannan Cen
+########################################
+current version: 2020-02-18 10:30
+# brief:     1) new place_skateboard.py --> to place the skateboard to a determined position in respect to the profile (origin of CSo)
+#               /(dont forget to set paylaod in gripper, otherwise the placing procedure will suddenly stop)
+# able to:   skateboard can be placed, but there is an displacement offset about 80mm between profile and skateboard.
+#            perhaps, it is due to the relative motion between gripper and profile while placing of profile.
+#            , which leads to a inaccurate rotation angle (6 degree). 
+#            Try to change the cruve motion modus (free orientation or fix orientation)
+# not able to:  -in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				    --> use new images _debug_catcher and v1_07 --> confirmed
+#               -when the distance between the robot and profile relative large (40mm), placing wont succeed
+#                   perhaps due to the maximum load of robot
+#               -placing procedure stopps 
+#                 maybe the battery is too low --> after charged, it works!
+#               -second grip is a challenge, because the view is to an extent up-down inverse.
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position. --> digital input 0 = High
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing  --> done
+#            add relative movement into state machine ---- declare a flag as the counter of times already grasped --> done
+#problem:    offset between in calculated goal and Mir reachs
+#            offset in tcp cs: the y direction is opposite
+#            the precision of mir is not good only acceptable
+########################################
+current version: 2020-02-14 17:30
+# brief:     1) try to graspe profile's back end by means of adding the length vecotr into coordinates of point to grapse 
+#               searching (only UR moving) --> to test 
+#               the depth to close the gripper needs to be determined by experiments
+#            2) lifting of 2. end -->done 
+# able to:   robot approach to the object and with same orientation,
+#            sometimes get the object in gripper and place it on the skateboard
+# not able to:  -in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				    --> use new images _debug_catcher and v1_07 --> confirmed
+#               -when the distance between the robot and profile relative large (40mm), placing wont succeed
+#                   perhaps due to the maximum load of robot
+#               -placing procedure stopps 
+#                 maybe the battery is too low --> after charged, it works!
+#               -second grip is a challenge, because the view is to an extent up-down inverse.
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position. --> digital input 0 = High
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing  --> done
+#            add relative movement into state machine ---- declare a flag as the counter of times already grasped --> done
+#problem:    offset between in calculated goal and Mir reachs
+#            offset in tcp cs: the y direction is opposite
+#            the precision of mir is not good only acceptable
+########################################
+# date:      2020-01-28 17:00
+# brief:     1) state machine 90% finished
+#               searching (only UR moving)
+#               MiR_Moving(Mir moving + ur preparing)  * object in view needs algorithm
+#               gripping(xy positioning+orientate+z position) --> can not reach the correct height to catch object
+#               in Placing added Z42_WITHDRAWING, which stands for ur returning to home_pose before the second movement of mir
+#            2) offset to object is changed to -0.3,+0.6
+#               less than 0.6 m distance leads to that MiR has no enough space to move forward but curvy
+# able to:   robot approach to the object and with same orientation,
+#            sometimes get the object in gripper and place it on the skateboard
+# not able to:  -in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				    --> use new images _debug_catcher and v1_07
+#               -when the distance between the robot and profile relative large (40mm), placing wont succeed
+#                   perhaps due to the maximum load of robot
+#               -placing procedure stopps 
+#                 maybe the battery is too low --> after charged, it works!
+#               -second grip is a challenge, because the view is to an extent up-down inverse.
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position. --> digital input 0 = High
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing  --> done
+#            add relative movement into state machine ---- declare a flag as the counter of times already grasped --> done
+#problem:    offset between in calculated goal and Mir reachs
+#            offset in tcp cs: the y direction is opposite
+#            the precision of mir is not good only acceptable
+########################################
+# date:      2020-01-24 12:30
+# brief:     1) state machine partly finished
+#               searching (only UR moving)
+#               MiR_Moving(Mir moving + ur preparing)  * object in view needs algorithm
+#               gripping(xy positioning+orientate+z position) --> can not reach the correct height to catch object
+#               Placing --> added
+#            2) Placing updated in touchscreen
+#               third step rotates 1 degree instead of 1.6 degree
+#            3) offset to object is changed
+#            4) add movealongobject.py (relative movement) --> tested 
+# able to:   robot approach to the object and with same orientation,
+#            sometimes get the object in gripper and place it on the skateboard
+# not able to:  -in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				    --> use new images _debug_catcher and v1_07
+#               -when the distance between the robot and profile relative large (40mm), placing wont succeed
+#                   perhaps due to the maximum load of robot
+#               -placing procedure stopps 
+#                 maybe the battery is too low --> after charged, it works!
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position. --> digital input 0 = High
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing  --> done
+#            add relative movement into state machine ---- declare a falg as the counter of times already grasped
+#problem:    offset between in calculated goal and Mir reachs
+#            offset in tcp cs: the y direction is opposite
+########################################
+# date:      2020-01-23 12:00
+# brief:     1) state machine partly finished
+#               searching (only UR moving)
+#               MiR_Moving(Mir moving + ur preparing)  * object in view needs algorithm
+#               gripping(xy positioning+orientate+z position) --> can not reach the correct height to catch object
+#               Placing --> added
+# able to:   robot approach to the object and with same orientation,
+#            sometimes get the object in gripper and place it on the skateboard
+# not able to:  in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				--> use new images _debug_catcher and v1_07
+#               when the distance between the robot and profile relative large (40mm), placing wont succeed
+#              perhaps due to the maximum load of robot
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position. --> digital input 0 = High
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing  --> done
+#problem:    offset between in calculated goal and Mir reachs
+#            offset in tcp cs: the y direction is opposite
+########################################
+# date:      2020-01-17 16:00
+# brief:     1) state machine partly finished
+#               searching (only UR moving)
+#               MiR_Moving(Mir moving + ur preparing)  * object in view needs algorithm
+#               gripping(xy positioning+orientate+z position) --> can not reach the correct height to catch object
+#               todo:
+#               Placing
+#	         2) goal_publisher3.py is renamed to grasp_object.py
+# able to:   robot approach to the object and with same orientation
+# not able to:  in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				--> use new images _debug_catcher and v1_07
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position. --> digital input 0 = High
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing  --> done
+#problem:    offset between in calculated goal and Mir reachs
+#            offset in tcp cs: the y direction is opposite
+########################################
+# date:      2020-01-14 15:20
+# brief:     1) complete the development of basic function of Moving
+#	         2) the calculation of orientation with that robot approach to the object:
+#                   1. method: quaternion multiplication                    --> working in approach2object.py
+#		            2. transformation of vector until with respect to map   --> working in set_goal.py
+# able to:   robot approach to the object and with same orientation
+# not able to:  in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				--> use new images _debug_catcher and v1_07
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position. --> digital input 0 = High
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing
+########################################
+# date:      2020-01-06 17:40
+# brief:     1) complete the development of basic function of Moving
+#	         2) the calculation of orientation with that robot approach to the object:
+#                   1. method: quaternion multiplication                    --> working in approach2object.py
+#		            2. transformation of vector until with respect to map   --> working in set_goal.py
+# able to:   robot approach to the object and with same orientation
+# not able to:  in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				--> use new images _debug_catcher and v1_07
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position.
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame      --> done, but need to fill the function into state
+#            to test Moving(MiR)      --> done
+#            new program for Placing
+########################################
+# date:      2020-01-06 11:45
+# brief:     1) update profile_detection_v1_07.py into v1_08 and therewith also position_determination_server.py
+#                   create the object coordinate system
+#	         2) update the set_goal.py
+#		            add the calculation of goal2approach for movement of MiR, including orientation
+#            3) new approach2object.py
+#                   execute the movement of MiR like goal_publisher3.py for UR
+# able to:   run urp.code in teach pendant by means of setting digital or analo I/O
+# not able to:  in the view towards down, position of target point is with error (y = 0.708 --> 0.730)
+#				--> use new images _debug_catcher and v1_07
+#
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position.
+#            utilize the functions in teach pendant such as depth compensation
+#            object coordinate system --> done
+#            state machine frame --> done, but need to fill the function into state
+#            to test Moving(MiR)
+#            new program for Placing
+########################################
+# date:      2020-01-03 14:15
+# brief:     1) new imagebased_grasping_smach.py 
+#                   to show main structure of the project using state machine
+#	     2) update the set_goal.py
+#		            add the calculation of goal2approach for movement of MiR, but only position of goal
+#            3) new approach2object.py
+#                   execute the movement of MiR like goal_publisher3.py for UR
+# able to:   run urp.code in teach pendant by means of setting digital or analo I/O
+# not able to:  in the view towards down, position of target point is with error (y = 0.708 --> 0.730) 
+#				--> use new images _debug_catcher and v1_07
+#                
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position.
+#            object coordinate system
+#            state machine frame --> done, but need to fill the function into state
+#            utilize the functions in teach pendant such as depth compensation
+########################################
+# date:      2019-12-18 17:00
+# brief:     1) new IO_test.py 
+#                   it's able to run urp.code in teach pendant by means of setting digital or analo I/O 
+#	     2) new images_debug_catcher.py
+#		    it's able to obtain the images from subscribring topics in recorded rosbags and make the debugging of
+#		    object detection more convenient
+# able to:   run urp.code in teach pendant by means of setting digital or analo I/O
+# not able to:  in the view towards down, position of target point is with error (y = 0.708 --> 0.730) 
+#				--> use new images _debug_catcher and v1_07
+#                
+# to do:     obtain the feedback from gripper to  detect if the gripper grabbed a workpiece or stopped at a given position.
+#            object coordinate system
+#            state machine frame  
+########################################
+# date:      2019-12-12-17 12:00
+# brief:     1) new murc.installation for a new coordinate system of TCP Werkzeug , eliminate the bug during running of goal_publisher3.py
+#                  bug: the cs will be renewed with TCP settings at program start or every time the gripper perfoms action
+#                  solution: keep the cs in TCP settings the same in reality (TCP_RG = [0,0,0,0,0,0]
+#                                                                             TCP_flange = [0,0,186.6,0,0,0])
+#                            important is to make the gripper in view same as reality
+#                  Correspondingly, the handeye transformation in handeye,py is ought to be updated, since the calibration is made based on the default installation
+#	         2) update the RG2 server, but brings not so much
+# able to:   complete automation to grapse the object
+# not able to:  invalid messages are skipped by counting time. That leads to time extension from the view of the whole gripping procedure
+#                
+# to do:     change goal_publisher3.py into a server which is able to work parallel to the mir's movement 
+########################################
+# date:      2019-12-13 15:15
+# brief:     1) update RPY2RotationVector.py, eliminate the bug in calculation if ux, uy, uz
+#	     2) change the queue_size in publisher
+# not able to:  goal2catch is sometimes incorrect. Maybe due to accumulation of messages
+#              but step 1 and 2 are right
+# 		Tobias's advice is to try another way to go round this problem. like searching object in limited motion 
+#  
+#		 
+########################################
+# date:      2019-12-11 16:45
+# brief:     1) update RPY2RotationVector.py, eliminate the bug in theta = +- pi, which leads to sin_theta = 0, because of using 1/2 = 0 in python
+#	     2) add RG2 server and RG2Gripper.action in package /murc_robot. before that, it is used that in /mur_robot
+#			it is to test  --> tested and add flag initialization_success
+#	      3) launch file  --> tested
+########################################
+# date:      2019-12-10 11:15
+# brief:     1) update RPY2RotationVector.py, eliminate the bug in theta = 0 or +- pi, which leads to extremely large and weired value in rotation vector
+#                                      refer to Robotik 2 script page 24
+#	     2) add RG2 server and RG2Gripper.action in package /murc_robot. before that, it is used that in /mur_robot
+#			it is to test
+#	     3) new: RotationFormalisms.py includes the all conversions between rotation vector and quaternion.
+#		According plan, all of conversions should be called from this script. Other separate functions will be replaced in the future.
+#		 
+# attention: !!!
+# be able to:   arrival to the target point
+#               sampling runs with a timeout of 3s. No answer or command within 3s, then go for next sampling
+#
+# not able to:  sometimes the arm rotated the tcp ( only 6. joint) for 180°. It's out of expection from code's side. After all, there is no such command to be given.
+#		Gripper server doesn't work every time. So is the gripper client.
+#		StraightDownZ has trouble in indirect calculation. Howerver, it doesn't impair its work.
+#  		
+# ---
+# to do:     
+#            add transformation from depth to color sensor --- done
+#            --- further
+#            new program for controlling gripper           --- done
+#            complete automation in gripping					--- to be done
+#		it can be a loop, which runs between "HOME" and gripping point on object.
+#		After gripping, release the object and return to "HOME" and grip the next one. 
+#            part of object in the view of camera	   --- partly achieved
+########################################
+# date:      2019-12-05 11:00
+# brief:     1) modified: set_goal.py   correct the calculation of target point.
+#                                      before that, the transformation from depth sensor to color sensor is not considerated.
+#	     2) determine the offset direction (offset: from target point to gripping point)
+#			the default direction of tcp (after restarting, it will be reset to the default cs):
+#			CS of RG2 is opposite to the CS of TCP
+#	     3) new: use StraightDownZ.py to avoid the unneccessary rotation in 1.step (before thar, TCP rotated always to the orientation (3.14,0,0))
+#              StraightDownZ.py updated:  directly use the rotation vector without quaternion multiplication
+#		 
+# attention: !!!
+# be able to:   arrival to the target point
+#               sampling runs with a timeout of 3s. No answer or command within 3s, then go for next sampling
+#
+# not able to:  sometimes the arm rotated the tcp ( only 6. joint) for 180°. It's out of expection from code's side. After all, there is no such command to be given.
+#		Gripper server doesn't work every time. So is the gripper client.
+#		StraightDownZ has trouble in indirect calculation. Howerver, it doesn't impair its work.
+#  		
+# ---
+# to do:     
+#            add transformation from depth to color sensor --- done
+#            --- further
+#            new program for controlling gripper           --- done
+#            complete automation in gripping					--- to be done
+#		it can be a loop, which runs between "HOME" and gripping point on object.
+#		After gripping, release the object and return to "HOME" and grip the next one. 
+#            part of object in the view of camera	   --- partly achieved
+#
+########################################
+# date:      2019-12-04 16:00
+# brief:     modified: set_goal.py   correct the calculation of target point.
+#                                      before that, the transformation from depth sensor to color sensor is nor considerated.
+#	     new: use StraightDownZ.py to avoid the unneccessary rotation in 1.step (before thar, TCP rotated always to the orientation (3.14,0,0))
+#		 
+# attention: !!!
+# be able to:   tcp_pose transfer rotation vector (rx,ry,rz) correctly
+#               step 2: movel can rotate z axis as expected by using movej instead of movel.
+#               sampling starts only when the movement finished
+#
+# not able to:  tcp_pose transfer wrong euler angles						 			     --> solved by using rcp2rv
+#               step 2: movel cannot rotate z axis as expected. Try movej  			 			     --> solved by using movej
+#		        only after movement, start sampling, especially after step(1) xy-position. flag for sampling switch  -->solved
+#
+# ---
+# to do:     
+#            add transformation from depth to color sensor
+#            --- further
+#            new program for controlling gripper
+#            complete automation in gripping
+#            part of object in the view of camera
+#
+########################################
+# date:      2019-11-22 13:26
+# brief:     new: add offset to the target point. That results in a gripping point.  --> works
+#		  create a rg2gripper_action_client.py to automatically control the gripper
+#  	         update the maximum depth that TCP can arrive : z_finger = 25; z_ground = -450
+#		 
+# attention: !!!
+# be able to:   tcp_pose transfer rotation vector (rx,ry,rz) correctly
+#               step 2: movel can rotate z axis as expected by using movej instead of movel.
+#               sampling starts only when the movement finished
+#
+# not able to:  tcp_pose transfer wrong euler angles						 			     --> solved by using rcp2rv
+#               step 2: movel cannot rotate z axis as expected. Try movej  			 			     --> solved by using movej
+#		        only after movement, start sampling, especially after step(1) xy-position. flag for sampling switch  -->solved
+#
+# ---
+# to do:     
+#            add transformation from depth to color sensor
+#            --- further
+#            new program for controlling gripper
+#            complete automation in gripping
+#            part of object in the view of camera
+#
+########################################
+# date:      2019-11-21 13:44
+# brief:     creat TcpPose.msg
+# 	     update 1. several .py files to print some sentences to show their running state
+#               2. goal_publisher2 to finish step 2 (rotate TCP) and 3 (TCP goes down)
+#  	     new:
+# attention: !!!
+# be able to:   tcp_pose transfer rotation vector (rx,ry,rz) correctly
+#               step 2: movel can rotate z axis as expected by using movej instead of movel.
+#
+# not able to:  tcp_pose transfer wrong euler angles --> solved by using rcp2rv
+#               step 2: movel cannot rotate z axis as expected. Try movej  --> solved by using movej
+#		only after movement, start sampling, especially after step(1) xy-position. flag for sampling switch
+#
+# ---
+# to do:     update the maximum depth that TCP can arrive : z_finger z_ground
+#            new program for controlling gripper
+#            complete automation in gripping
+#            part of object in the view of camera
+#
+########################################
+# date:      2019-11-20 17:50
+# brief:     creat TcpPose.msg
+# 	     update 1. goal_publisher to goal_publisher2 in order to complete the gripping procedure
+#	         		3 steps: xy_position --> z_orientation --> z_position
+#		    2. transformation_arm.py publish a topic "/tcp_pose"
+#  	     new:
+# attention: !!!
+# be able to:   tcp_pose transfer rotation vector (rx,ry,rz) correctly
+#
+# not able to:  tcp_pose transfer wrong euler angles --> solved by using rcp2rv
+#               step 2: movel cannot rotate z axis as expected. Try movej
+#
+# ---
+# to do:     to test in the real hardware
+#
+########################################
+# date:      2019-11-19 15:49
+# brief:     creat RobotMove.action and edit CMakefile.txt as well as package.xml
+#  	     two new .py files: robot_move_action_server.py and robot_move_action_client.py
+# attention: !!!
+# be able to: robot_move_action_client.py and robot_move_action_server.py work!
+#
+#
+# not able to:  
+# ---
+# to do:     to test
+#
