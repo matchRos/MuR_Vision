@@ -4,7 +4,7 @@
 # date:      2020-01-06
 # brief:     robot arm grasps the object in 4 steps
 #            1: x- und y-positioning  2:orientating
-#            3: quick z-positioning (to the height z_o + 750mm)  z_o is the height of object
+#            3: quick z-positioning (to the height z_o + 75mm)  z_o is the height of object
 #            4: slow z-positioning (to the height z_o)
 import rospy
 from geometry_msgs.msg import Point
